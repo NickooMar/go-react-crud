@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
+	"github.com/NickooMar/go-react-crud/database"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
@@ -20,6 +22,12 @@ func main() {
 	app.Use(cors.New())
 
 	// MongoDB connection
+	db, err := database.ConnectDatabase()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Disconnect()
+	fmt.Println("Conexión a MongoDB exitosa")
 
 	app.Static("/", "../client/dist")
 
